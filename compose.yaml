@@ -1,0 +1,16 @@
+services:
+
+  testrunner:
+    image: $DEV_IMAGE_TAG
+    deploy:
+      replicas: 3
+    build:
+      dockerfile: Dockerfile.dev
+      context: .
+      args:
+        OTP_VERSION: $OTP_VERSION
+    volumes:
+      - .:$PWD
+    hostname: registry_bench
+    working_dir: $PWD
+    command: /sbin/init
