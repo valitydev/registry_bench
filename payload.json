@@ -1,0 +1,8 @@
+{
+  "LockDelay": "15s",
+  "Name": "my-service-lock-1",
+  "Node": "consul-1",
+  "Checks": [],
+  "Behavior": "release",
+  "TTL": "30s"
+}

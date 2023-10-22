@@ -3,6 +3,18 @@ Benchmark for Erlang global registry
 
 # Usage
 
+Для работы теста требуется docker образ консула:
+````
+# docker pull consul:1.15
+````
+
+Тестируемая функция регистрации задается в config/sys.config.src
+````
+    {registry_bench, [
+        {reg_fun, fun consuela:register_name/2}
+    ]}
+````
+
 ````
 #./run-test.sh 5 1000 false
 ````

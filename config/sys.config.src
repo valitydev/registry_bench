@@ -1,0 +1,15 @@
+[
+    {registry_bench, [
+        {reg_fun, fun consuela:register_name/2}
+    ]},
+
+    {consuela, [
+        {registry, #{
+            nodename => "${CONSUL_NODE}",
+            namespace => <<"namespace">>,
+            consul => #{
+                url => "${CONSUL_URL}"
+            }
+        }}
+    ]}
+].

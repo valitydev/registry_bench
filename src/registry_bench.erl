@@ -69,7 +69,8 @@ handle_info({timeout, _TimerRef, fire}, #{with_conflict := WithConflict, proc_co
     coordinator := Coordinator} = State) ->
 
     IDs = create_ids(ProcCount, WithConflict),
-    Report = do_test(IDs),
+    RegFun = application:get_env(registry_bench, reg_fun, fun global:register_name/2),
+    Report = do_test(IDs, RegFun),
     true = rpc:cast(Coordinator, ?MODULE, report, [Report]),
     {noreply, State};
 handle_info(_Info, State) ->
@@ -85,11 +86,11 @@ code_change(_OldVsn, State, _Extra) ->
 %%% Internal functions
 %%%===================================================================
 
-do_test(IDs) ->
+do_test(IDs, RegFun) ->
     Fun = fun() -> receive _M -> stop end end,
     Flow = fun() ->
         lists:foldl(fun(Id, Acc) ->
-            [ global:register_name(Id, spawn(Fun)) | Acc ]
+            [ RegFun(Id, spawn(Fun)) | Acc ]
         end, [], IDs)
     end,
     {Time, Results} = timer:tc(Flow),
